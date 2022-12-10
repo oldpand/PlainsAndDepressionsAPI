@@ -11,9 +11,11 @@ public class ProcessCommandHandler : IRequestHandler<MeadowProcessCommand, Resul
     {
         var depressions = FindDepressions(request.Meadow);
 
+        var packId = Guid.NewGuid();
+
         //TODO отправить в RabbitMQ
 
-        return Task.FromResult(new Result());
+        return Task.FromResult(new Result(packId));
     }
 
     private static IOrderedEnumerable<Depression> FindDepressions(int[][] arr)
@@ -33,7 +35,9 @@ public class ProcessCommandHandler : IRequestHandler<MeadowProcessCommand, Resul
                 if (arr[j].Length - 1 < i)
                 {
                     if (depression.InProc)
+                    {
                         depressions.Add(depression);
+                    }
                     depression.InProc = false;
                     continue;
                 }

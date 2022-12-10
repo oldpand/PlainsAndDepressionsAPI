@@ -1,6 +1,6 @@
 ﻿namespace PlainsAndDepressions.Requests;
 
-public class PutPADRequest
+public class CalculatePadRequest
 {
     public int[][] Meadow { get; set; } = null!;
 }

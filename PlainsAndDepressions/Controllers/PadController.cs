@@ -10,14 +10,15 @@ namespace PlainsAndDepressions.Controllers;
 public class PadController : ControllerBase
 {
     private readonly IMediator _mediator;
+
     public PadController(IMediator mediator)
     {
         _mediator = mediator;
     }
 
     [HttpPut]
-    [Route("meadow")]
-    public async Task<IActionResult> PutPad([FromBody]PutPADRequest request)
+    [Route("calculate")]
+    public async Task<IActionResult> CalculatePad([FromBody]CalculatePadRequest request)
     {
         var result = await _mediator.Send(new MeadowProcessCommand(request.Meadow));
 
