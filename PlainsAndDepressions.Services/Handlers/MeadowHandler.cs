@@ -1,19 +1,34 @@
 ﻿using MediatR;
+using PlainsAndDepressions.Contracts.Models;
 using PlainsAndDepressions.Services.Commands;
 using PlainsAndDepressions.Services.Results;
-using System.Linq.Expressions;
+using PlainsAndDepressions.Services.Services;
 
 namespace PlainsAndDepressions.Services.Handlers;
 
 public class ProcessCommandHandler : IRequestHandler<MeadowProcessCommand, Result>
 {
+    private readonly IRabbitMqService _rabbitMqService = null!;
+
+    public ProcessCommandHandler(IRabbitMqService rabbitMqService)
+    {
+        _rabbitMqService = rabbitMqService;
+    }
+
     public Task<Result> Handle(MeadowProcessCommand request, CancellationToken cancellationToken)
     {
         var depressions = FindDepressions(request.Meadow);
 
         var packId = Guid.NewGuid();
 
-        //TODO отправить в RabbitMQ
+        var message = new PutDepressionsRequest
+        {
+            PackId = packId,
+            Pack = depressions
+        };
+
+        //отправить в RabbitMQ
+        _rabbitMqService.SendMessage(message);
 
         return Task.FromResult(new Result(packId));
     }

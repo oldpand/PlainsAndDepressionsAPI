@@ -2,6 +2,7 @@ using MediatR;
 using PlainsAndDepressions.Services.Commands;
 using PlainsAndDepressions.Services.Handlers;
 using PlainsAndDepressions.Services.Results;
+using PlainsAndDepressions.Services.Services;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,9 @@ builder.Services
     .AddMediatR(Assembly.GetExecutingAssembly())
     .AddScoped<IRequestHandler<MeadowProcessCommand, Result>, ProcessCommandHandler>()
     ;
+
+builder.Services
+    .AddSingleton<IRabbitMqService, RabbitMqService>();
 
 builder.Services
     .AddControllers();
