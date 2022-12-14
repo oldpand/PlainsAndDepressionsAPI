@@ -17,7 +17,7 @@ builder.Services
     ;
 
 builder.Services
-    .AddSingleton<IRabbitMqService, RabbitMqService>();
+    .AddTransient<IRabbitMqService, RabbitMqService>();
 
 builder.Services
     .AddControllers();
